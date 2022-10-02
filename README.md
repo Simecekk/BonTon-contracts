@@ -1,4 +1,4 @@
-# Shelbot - Charity driven gambling
+# Shelbot - Gambling driven charity
 
 Purposes of Shelbot is to provide easy way how to gamble with unnecessary money on ton blockchain through telegram bot.
  
