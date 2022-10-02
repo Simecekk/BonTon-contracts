@@ -1,4 +1,4 @@
-# Shelbot - gambling game to save the planet
+# Shelbot - Charity driven gambling
 
 Purposes of Shelbot is to provide easy way how to gamble with unnecessary money on ton blockchain through telegram bot.
  
@@ -16,7 +16,7 @@ Purposes of Shelbot is to provide easy way how to gamble with unnecessary money 
 
 Shelbot was build during Hack-a-Ton event in Prague. 
 
-Contracts are written in FunC and tests in typescript
+Contracts are written in FunC and tested with typescript
 
 as a based template we have used: https://github.com/ton-defi-org/tonstarter-contracts
 
@@ -24,7 +24,7 @@ as a based template we have used: https://github.com/ton-defi-org/tonstarter-con
 
 `npm run deploy` -- deploy to mainnet 
 
-`npm run test` -- run testsuite for  
+`npm run test` -- run testsuite for donton contracts
 
 `npm run build` -- deploy to build 
 
