@@ -1,0 +1,14 @@
+;; operations (constant values taken from crc32 on op message in the companion .tlb files and appear during build)
+const op::start = 0x4349f57a;
+const op::invest = 0x165389ea;
+const op::winner = 0x586578f4;
+const op::transfer_ownership = 0x2da38aaf;
+const op::register = 0x4dcbb5a8;
+
+;; errors
+const error::unknown_op = 101;
+const error::access_denied = 102;
+const error::insufficient_balance = 103;
+const error::game_started = 104;
+const error::insufficient_register_fee = 105;
+const error::insufficient_number_of_players = 106;

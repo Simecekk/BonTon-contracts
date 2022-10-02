@@ -1,0 +1,19 @@
+// https://ton.org/docs/#/overviews/TL-B
+// base types defined in https://github.com/ton-blockchain/ton/blob/master/crypto/block/block.tlb
+
+// storage (according to save_data() contract method)
+
+storage#_ owner_address:MsgAddress counter:uint64 = Storage
+
+// ops
+register query_id:uint64 = InternalMsgBody
+
+start query_id:uint64 = InternalMsgBody
+
+invest query_id:uint64 = InternalMsgBody
+
+winner query_id:uint64 winner_address:MsgAddress = InternalMsgBody
+
+transfer_ownership query_id:uint64 new_owner_address:MsgAddress = InternalMsgBody
+
+

@@ -1,0 +1,120 @@
+#pragma version >=0.2.0;
+
+#include "imports/stdlib.fc";
+#include "imports/constants.fc";
+#include "imports/utils.fc";
+;; =============== storage =============================
+
+;; storage binary format is defined as TL-B in companion .tlb file
+(slice, int, int) load_data() inline {
+  var ds = get_data().begin_parse();
+  return (
+    ds~load_msg_addr(), ;; owner_address
+    ds~load_uint(64),   ;; player_counter --> Number of players in the game
+    ds~load_uint(64)    ;; playing --> Bool indicating whether
+  );
+}
+
+() save_data(slice owner_address, int player_counter, int playing) impure inline {
+  set_data(begin_cell()
+    .store_slice(owner_address)
+    .store_uint(player_counter, 64)
+    .store_uint(playing, 64)
+    .end_cell()
+  );
+}
+
+;; =============== messages =============================
+
+;; message binary format is defined as TL-B in companion .tlb file
+
+() glory_to_winner(slice winner_address) impure;
+
+() recv_internal(int msg_value, cell in_msg, slice in_msg_body) impure {
+
+  ;; parse incoming internal message
+  slice cs = in_msg.begin_parse();
+  int flags = cs~load_uint(4);
+  slice sender_address = cs~load_msg_addr();
+
+  ;; handle bounced messages
+  if (flags & 1) {
+    return (); ;; ignore
+  }
+
+  ;; load from contract storage
+  var (owner_address, player_counter, playing) = load_data();
+
+  ;; handle operations
+  int op = in_msg_body~load_uint(32);
+  int query_id = in_msg_body~load_uint(64);
+
+  if (op == op::register) {
+    ;; empty since ton received (msg_value) is added automatically to contract balance
+    ;; ~dump msg_value; ;; an example of debug output, requires running contract in debug mode
+    throw_unless(error::insufficient_register_fee, msg_value == 1000000000);
+    throw_unless(error::game_started, playing == 0);
+    save_data(owner_address, player_counter + 1, 0);
+    return ();
+  }
+
+  if (op == op::start) {
+    throw_unless(error::access_denied, equal_slices(sender_address, owner_address));
+    throw_unless(error::game_started, playing == 0);
+    throw_unless(error::insufficient_number_of_players, player_counter > 1);
+    save_data(owner_address, player_counter, 1);
+    return ();
+  }
+
+  if (op == op::invest) {
+    ;; Takes ton from wallet and use it to automatically start a game
+    ;; TODO mapping who invested and how much
+    return ();
+  }
+
+  if (op == op::winner) {
+    ;; whole donton balance is send to winner
+    throw_unless(error::access_denied, equal_slices(sender_address, owner_address));
+    slice winner_address = in_msg_body~load_msg_addr();
+    glory_to_winner(winner_address);
+    save_data(owner_address, 0, 0);
+    return ();
+  }
+
+  if (op == op::transfer_ownership) {
+    throw_unless(error::access_denied, equal_slices(sender_address, owner_address));
+    slice new_owner_address = in_msg_body~load_msg_addr();
+    save_data(new_owner_address, player_counter, playing);
+    return ();
+  }
+
+  throw(error::unknown_op);
+}
+
+() glory_to_winner(slice winner_address) impure {
+  var [balance, _] = get_balance();
+  send_grams(winner_address, balance);
+}
+
+
+;; =============== getters =============================
+
+int balance() method_id {
+  var [balance, _] = get_balance();
+  return balance;
+}
+
+slice owner_address() method_id {
+  var (owner_address, _, _) = load_data();
+  return owner_address;
+}
+
+int player_counter() method_id {
+  var (_, player_counter, _) = load_data();
+  return player_counter;
+}
+
+int playing() method_id {
+  var (_, _, playing) = load_data();
+  return playing;
+}
