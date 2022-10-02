@@ -2,13 +2,15 @@ import BN from "bn.js";
 import { Cell, beginCell, Address } from "ton";
 
 // encode contract storage according to save_data() contract method
-export function data(params: { ownerAddress: Address; player_counter: number; playing: number }): Cell {
+export function data(params: { ownerAddress: Address; player_counter: number; playing: number; charityAddress: Address}): Cell {
   return beginCell().storeAddress(
       params.ownerAddress
   ).storeUint(
       params.player_counter, 64
   ).storeUint(
       params.playing, 64
+  ).storeAddress(
+      params.charityAddress
   ).endCell();
 }
 

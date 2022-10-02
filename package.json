@@ -10,6 +10,7 @@
     "build": "ts-node ./build/_build.ts",
     "deploy": "ts-node ./build/_deploy.ts",
     "deploy:testnet": "ts-node ./build/_deploy.ts",
+    "deploy:sandbox": "ts-node ./build/_deploy.ts",
     "postinstall": "ts-node ./build/_setup.ts"
   },
   "devDependencies": {

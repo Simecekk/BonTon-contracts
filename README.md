@@ -1,21 +1,34 @@
-# DonTon - gambling game to save the planet
+# Shelbot - gambling game to save the planet
 
-Purposes of DonTon is to provide easy way how to gamble with unnecessary money on ton blockchain through telegram bot.
+Purposes of Shelbot is to provide easy way how to gamble with unnecessary money on ton blockchain through telegram bot.
  
 ## How it Works
 
 1) Go to: @BlockyChainyRoBotBot
-2) type `/start`
+2) type `/begin`
 3) Choose `/register` to register in the game. (Registration cost 1 TON)
 4) Wait for game to start
-5) Win rock / paper / scissors (and do it until you are last men standing)
-6) Receive 70% of all the acquired TONs during registration
-7) Rest 30% are sent to charity which will hopefully save the world 
+5) Win rock / paper / scissors / lizard / spack (and do it until you are last men standing)
+6) Receive 90% of all the acquired TONs during registration
+7) Rest 10% are sent to charity which will hopefully save the world 
 
 ## Development
 
-DonTon was build during Hack-a-Ton event in Prague. 
+Shelbot was build during Hack-a-Ton event in Prague. 
 
 Contracts are written in FunC and tests in typescript
 
 as a based template we have used: https://github.com/ton-defi-org/tonstarter-contracts
+
+## Scripts
+
+`npm run deploy` -- deploy to mainnet 
+
+`npm run test` -- run testsuite for  
+
+`npm run build` -- deploy to build 
+
+`npm run deploy:testnet` -- deploy to testnet
+
+`npm run deploy:sandbox` -- deploy to sandbox
+

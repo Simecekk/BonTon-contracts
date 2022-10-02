@@ -7,7 +7,8 @@ export function initData() {
   return donton.data({
     ownerAddress: Address.parseFriendly("EQBXQukWKQhNhK80-Sdp0mEpGuqWfDTLuUo7VijeV92iHp37").address,
     player_counter: 0,
-    playing: 0
+    playing: 0,
+    charityAddress: Address.parseFriendly("EQBXQukWKQhNhK80-Sdp0mEpGuqWfDTLuUo7VijeV92iHp37").address
   });
 }
 

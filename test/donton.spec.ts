@@ -19,7 +19,8 @@ describe("Donton tests", () => {
       donton.data({
         ownerAddress: randomAddress("owner"),
         player_counter: 0,
-        playing: 0
+        playing: 0,
+        charityAddress: randomAddress("charity")
       }),
     );
   });
@@ -43,6 +44,12 @@ describe("Donton tests", () => {
   it("Should return whether game is started", async() => {
     const call = await contract.invokeGetMethod("playing", []);
     expect(call.result[0]).to.be.bignumber.equal(new BN(0));
+  });
+
+  it("Should return charity address", async() => {
+    const call = await contract.invokeGetMethod("charity_address", []);
+    const address = (call.result[0] as Slice).readAddress();
+    expect(address?.equals(randomAddress("charity"))).to.equal(true);
   });
 
   it("Should register user", async () => {
@@ -120,6 +127,37 @@ describe("Donton tests", () => {
     );
     expect(send_failed_104.type).to.equal("failed");
     expect(send_failed_104.exit_code).to.equal(104)
+  });
+
+  it("Should glory to winner and send 30% to charity", async () => {
+    await contract.sendInternalMessage(
+      internalMessage({
+        from: randomAddress("notowner"),
+        body: donton.register(),
+        value: toNano(1),
+      })
+    );
+    await contract.sendInternalMessage(
+      internalMessage({
+        from: randomAddress("notowner2"),
+        body: donton.register(),
+        value: toNano(1),
+      })
+    );
+    await contract.sendInternalMessage(
+      internalMessage({
+        from: randomAddress("owner"),
+        body: donton.start(),
+      })
+    );
+
+    const send_success = await contract.sendInternalMessage(
+      internalMessage({
+        from: randomAddress("owner"),
+        body: donton.winner({winnerAddress: randomAddress("winner")}),
+      })
+    );
+    expect(send_success.type).to.equal("success");
   });
 
 });
