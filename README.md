@@ -10,7 +10,7 @@ Purposes of Shelbot is to provide easy way how to gamble with unnecessary money 
 4) Wait for game to start
 5) Win rock / paper / scissors / lizard / spack (and do it until you are last men standing)
 6) Receive 90% of all the acquired TONs during registration
-7) Rest 10% are sent to charity which will hopefully save the world 
+7) Rest 10% are sent to charity
 
 ## Development
 
